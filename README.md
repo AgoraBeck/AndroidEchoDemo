@@ -1,62 +1,65 @@
-## Ê¹ÓÃ android ×Ô´ø»ØÉùÏû³ý
+# ä½¿ç”¨ android è‡ªå¸¦å›žå£°æ¶ˆé™¤
 
-Android ÔÚ4.1 API leve 16 Ìí¼ÓÁË»ØÉùÏû³ý´¦Àí **AcousticEchoCanceler**
+Android åœ¨4.1 API leve 16 æ·»åŠ äº†å›žå£°æ¶ˆé™¤å¤„ç† AcousticEchoCanceler
 
-²»¹ýÓÉÓÚÊÖ»ú³§ÉÌÌ«¶à£¬ËéÆ¬»¯ÑÏÖØ£¬ÊµÏÖÐ§¹ûÒ²²»Ò»Ñù£¬ÕâÀïÖ»×ö²âÊÔÐÔÊ¹ÓÃ
+ä¸è¿‡ç”±äºŽæ‰‹æœºåŽ‚å•†å¤ªå¤šï¼Œç¢Žç‰‡åŒ–ä¸¥é‡ï¼Œå®žçŽ°æ•ˆæžœä¹Ÿä¸ä¸€æ ·ï¼Œè¿™é‡Œåªåšæµ‹è¯•æ€§ä½¿ç”¨
 
-¼ÇÂ¼Ò»ÏÂ²½Öè£º
+## è®°å½•ä¸€ä¸‹æ­¥éª¤ï¼š
 
-**¼ì²âÏµÍ³ÊÇ·ñÖ§³Ö»ØÉùÏû³ý**
+> æ£€æµ‹ç³»ç»Ÿæ˜¯å¦æ”¯æŒå›žå£°æ¶ˆé™¤
 
-**´´½¨Â¼ÖÆ£¬²¢ÄÃµ½sessionid**
+> åˆ›å»ºå½•åˆ¶ï¼Œå¹¶æ‹¿åˆ°sessionid
 
-**´´½¨»ØÉùÏû³ý ¹ØÁªÂ¼ÖÆµÄsessionid**
+> åˆ›å»ºå›žå£°æ¶ˆé™¤ å…³è”å½•åˆ¶çš„sessionid
 
-**´´½¨²¥·Å£¬¹ØÁªÂ¼ÖÆµÄsessionid**
+> åˆ›å»ºæ’­æ”¾ï¼Œå…³è”å½•åˆ¶çš„sessionid
 
-ÕâÈýÕßÓÉÂ¼ÖÆµÄsessionid ¹ØÁªÆðÀ´ÁË£¬¾ÍÄÜ¹»Êµ´¦Àíµômic²É¼¯µ½µÄÓÉÀ®°È²¥·Å³öµÄÉùÒôÁË¡£
 
-¿´´úÂë£º
-```
-    public static boolean chkNewDev()
-    {
-          return android.os.Build.VERSION.SDK_INT >= 16;
-    }
+è¿™ä¸‰è€…ç”±å½•åˆ¶çš„sessionid å…³è”èµ·æ¥äº†ï¼Œå°±èƒ½å¤Ÿå®žå¤„ç†æŽ‰micé‡‡é›†åˆ°çš„ç”±å–‡å­æ’­æ”¾å‡ºçš„å£°éŸ³äº†ã€‚
+
+çœ‹ä»£ç ï¼š
+
+   
+	public static boolean chkNewDev()
+   	{
+	 return android.os.Build.VERSION.SDK_INT >= 16;
+	}
     
 	public static boolean isDeviceSupport()
 	{
-        return AcousticEchoCanceler.isAvailable();
+    	return AcousticEchoCanceler.isAvailable();
 	}
-```
-¼ì²âÊÇ·ñÖ§³Ö£¬¾ÓÈ»´æÔÚ²»×¼È·µÄÇé¿ö£¿
-```
-int InitAudioRecord()
-		{
-			m_bufferSizeInBytes = AudioRecord.getMinBufferSize(m_sampleRateInHz,  m_channelConfig, m_audioFormat);  	
-			if (chkNewDev())
-			{
-				m_audioRecord = new AudioRecord(MediaRecorder.AudioSource.VOICE_COMMUNICATION, m_sampleRateInHz, m_channelConfig, m_audioFormat, m_bufferSizeInBytes);
-			}
-			else
-			{
-				m_audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, m_sampleRateInHz, m_channelConfig, m_audioFormat, m_bufferSizeInBytes);
-			}
+	
+æ£€æµ‹æ˜¯å¦æ”¯æŒï¼Œå±…ç„¶å­˜åœ¨ä¸å‡†ç¡®çš„æƒ…å†µï¼Ÿ
+		
+	
+	int InitAudioRecord()
+	{
+		m_bufferSizeInBytes = AudioRecord.getMinBufferSize(m_sampleRateInHz,  m_channelConfig, m_audioFormat);  	
+	if (chkNewDev())
+	{
+		m_audioRecord = new AudioRecord(MediaRecorder.AudioSource.VOICE_COMMUNICATION, m_sampleRateInHz, m_channelConfig, m_audioFormat, m_bufferSizeInBytes);
+	}
+	else
+	{
+		m_audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, m_sampleRateInHz, m_channelConfig, m_audioFormat, m_bufferSizeInBytes);	}
 			
-			int packSize = Math.min(960, m_bufferSizeInBytes*2);
-			audioData = new short[packSize];
-			return 0;
-		}
-```
-Èç¹ûÏµÍ³Ö§³Ö»ØÉùÏû³ý£¬ÔòÓÃ**MediaRecorder.AudioSource.VOICE_COMMUNICATION**
-```
-public int GetSessionId()
-		{
-			return m_audioRecord.getAudioSessionId();
-		}
-```
-»ñÈ¡micµÄsessionid£¬¸ø»ØÉùÏû³ýºÍ²¥·Å¹ØÁªÓÃ
-```
-public boolean initAEC(int audioSession)
+		int packSize = Math.min(960, m_bufferSizeInBytes*2);
+		audioData = new short[packSize];
+		return 0;
+	}
+
+		
+
+å¦‚æžœç³»ç»Ÿæ”¯æŒå›žå£°æ¶ˆé™¤ï¼Œåˆ™ç”¨MediaRecorder.AudioSource.VOICE_COMMUNICATION
+
+	public int GetSessionId()
+	{
+		return m_audioRecord.getAudioSessionId();
+	}
+èŽ·å–micçš„sessionidï¼Œç»™å›žå£°æ¶ˆé™¤å’Œæ’­æ”¾å…³è”ç”¨
+
+	public boolean initAEC(int audioSession)
 	{
 		if (m_canceler != null)
 		{
@@ -66,36 +69,41 @@ public boolean initAEC(int audioSession)
 		m_canceler.setEnabled(true);
 		return m_canceler.getEnabled();
 	}
-```
-´´½¨»ØÉùÏû³ý ²¢Ê¹ÄÜ
-```
-		int InitAudioTrack()
-		{
-			int m_sampleRateInHz = 48000;  
-			int m_channelConfig  =  AudioFormat.CHANNEL_IN_STEREO;   
-			int m_audioFormat    = AudioFormat.ENCODING_PCM_16BIT; 
-			int m_bufferSizeInBytes = 1024*4;
+
+
+
+åˆ›å»ºå›žå£°æ¶ˆé™¤ å¹¶ä½¿èƒ½
+
+	int InitAudioTrack()
+	{
+		int m_sampleRateInHz = 48000;  
+		int m_channelConfig  =  AudioFormat.CHANNEL_IN_STEREO;   
+		int m_audioFormat    = AudioFormat.ENCODING_PCM_16BIT; 
+		int m_bufferSizeInBytes = 1024*4;
 			
-			if (chkNewDev() && m_recorder != null)
-			{
-				m_audioTrack = new AudioTrack(AudioManager.STREAM_VOICE_CALL, m_sampleRateInHz, m_channelConfig, m_audioFormat, m_bufferSizeInBytes, AudioTrack.MODE_STREAM, m_recorder.GetSessionId());
-			}
-			else
-			{
-				m_audioTrack = new AudioTrack(AudioManager.STREAM_VOICE_CALL, m_sampleRateInHz, m_channelConfig, m_audioFormat, m_bufferSizeInBytes, AudioTrack.MODE_STREAM);
-			}
-			return 0;
+		if (chkNewDev() && m_recorder != null)
+		{
+			m_audioTrack = new AudioTrack(AudioManager.STREAM_VOICE_CALL, m_sampleRateInHz, m_channelConfig, m_audioFormat, m_bufferSizeInBytes, AudioTrack.MODE_STREAM, m_recorder.GetSessionId());
 		}
-```
-Èç¹ûÏµÍ³Ö§³Ö»ØÉù´¦Àí Ôò´´½¨¹ØÁªmic µÄsessionid
+		else
+		{
+			m_audioTrack = new AudioTrack(AudioManager.STREAM_VOICE_CALL, m_sampleRateInHz, m_channelConfig, m_audioFormat, m_bufferSizeInBytes, AudioTrack.MODE_STREAM);
+		}
+			return 0;
+	}
+å¦‚æžœç³»ç»Ÿæ”¯æŒå›žå£°å¤„ç† åˆ™åˆ›å»ºå…³è”mic çš„sessionid
 
-ok£¬×ßÍ¨ÁË
+okï¼Œèµ°é€šäº†
 
-```
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        AudioManager audioManager = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
-        audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
-        audioManager.setSpeakerphoneOn(true);
-```
+	getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    AudioManager audioManager = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
+    audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
+    audioManager.setSpeakerphoneOn(true);
+        
+å¿˜äº†è¯´ï¼Œåœ¨ç¨‹åºå¯åŠ¨çš„æ—¶å€™éœ€è¦è®¾ç½®ä¸€ä¸‹ AudioManager.MODE_IN_COMMUNICATION å’Œ å¤–æ”¾æ¥éªŒè¯å›žå£°å¤„ç†æ•ˆæžœ.
 
-ÍüÁËËµ£¬ÔÚ³ÌÐòÆô¶¯µÄÊ±ºòÐèÒªÉèÖÃÒ»ÏÂ **AudioManager.MODE_IN_COMMUNICATION** ºÍ Íâ·ÅÀ´ÑéÖ¤»ØÉù´¦ÀíÐ§¹û
+
+> Fork From
+
+	https://github.com/newrtc/AndroidEchoDemo
+	
